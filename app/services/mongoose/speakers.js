@@ -37,10 +37,11 @@ const getOneSpeakers = async (req) => {
 
 const updateSpeakers = async (req) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, email } = req.body;
 
   const check = await Speakers.findOne({
     name,
+    email,
     _id: { $ne: id },
   });
 
@@ -48,7 +49,7 @@ const updateSpeakers = async (req) => {
 
   const result = await Speakers.findOneAndUpdate(
     { _id: id },
-    { name },
+    { name, email },
     { new: true, runValidators: true }
   );
 
@@ -63,6 +64,8 @@ const deleteSpeakers = async (req) => {
   const result = await Speakers.findOne({ _id: id });
 
   if (!result) throw new NotFoundError(`Tidak ada user dengan id :  ${id}`);
+
+  await result.deleteOne({ _id: id });
 
   return result;
 };
