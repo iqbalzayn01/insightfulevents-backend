@@ -7,7 +7,10 @@ const app = express();
 
 const v1 = '/api/v1';
 // Router
+const authCMSRouter = require('./app/api/v1/auth/router');
 const usersRouter = require('./app/api/v1/users/router');
+const userRefreshTokenRouter = require('./app/api/v1/userRefreshToken/router');
+const speakersRouter = require('./app/api/v1/speakers/router');
 
 // Middlewares
 const notFoundMiddleware = require('./app/middlewares/not-found');
@@ -26,7 +29,10 @@ app.get('/', (req, res) => {
 });
 
 // App Router
+app.use(`${v1}/cms`, authCMSRouter);
 app.use(`${v1}/cms`, usersRouter);
+app.use(`${v1}/cms`, userRefreshTokenRouter);
+app.use(`${v1}/cms`, speakersRouter);
 
 // App Middlewares
 app.use(notFoundMiddleware);
