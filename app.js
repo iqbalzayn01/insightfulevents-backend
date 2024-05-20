@@ -11,6 +11,7 @@ const authCMSRouter = require('./app/api/v1/auth/router');
 const usersRouter = require('./app/api/v1/users/router');
 const userRefreshTokenRouter = require('./app/api/v1/userRefreshToken/router');
 const speakersRouter = require('./app/api/v1/speakers/router');
+const eventsRouter = require('./app/api/v1/events/router');
 
 // Middlewares
 const notFoundMiddleware = require('./app/middlewares/not-found');
@@ -33,6 +34,7 @@ app.use(`${v1}/cms`, authCMSRouter);
 app.use(`${v1}/cms`, usersRouter);
 app.use(`${v1}/cms`, userRefreshTokenRouter);
 app.use(`${v1}/cms`, speakersRouter);
+app.use(`${v1}/cms`, eventsRouter);
 
 // App Middlewares
 app.use(notFoundMiddleware);

@@ -70,10 +70,19 @@ const deleteSpeakers = async (req) => {
   return result;
 };
 
+const checkingSpeakers = async (id) => {
+  const result = await Speakers.findOne({ _id: id });
+
+  if (!result) throw new NotFoundError(`Tidak ada user dengan id :  ${id}`);
+
+  return result;
+};
+
 module.exports = {
   createSpeakers,
   getAllSpeakers,
   getOneSpeakers,
   updateSpeakers,
   deleteSpeakers,
+  checkingSpeakers,
 };

@@ -22,7 +22,10 @@ const createUsers = async (req, res) => {
 };
 
 const getAllUsers = async (req) => {
-  const result = await Users.find({}, 'name email avatar role').exec();
+  const result = await Users.find(
+    {},
+    'name email avatar role createdAt'
+  ).exec();
 
   return result;
 };

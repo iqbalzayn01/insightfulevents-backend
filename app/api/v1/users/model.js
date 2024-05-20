@@ -1,40 +1,43 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-let userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    require: [true, 'Nama harus diisi'],
-    minlength: 2,
-    maxlength: 100,
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: [true, 'Email harus diisi'],
-    minlength: 3,
-    maxlength: 30,
-  },
-  password: {
-    type: String,
-    required: [true, 'Password harus diisi'],
-    minlength: 6,
-  },
-  avatar: {
-    type: String,
-    default: function () {
-      return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-        this.name
-      )}&background=random`;
+let userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Nama harus diisi'],
+      minlength: 2,
+      maxlength: 100,
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: [true, 'Email harus diisi'],
+      minlength: 3,
+      maxlength: 30,
+    },
+    password: {
+      type: String,
+      required: [true, 'Password harus diisi'],
+      minlength: 6,
+    },
+    avatar: {
+      type: String,
+      default: function () {
+        return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+          this.name
+        )}&background=random`;
+      },
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+      required: [true, 'Role harus diisi'],
     },
   },
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
-    required: [true, 'Role harus diisi'],
-  },
-});
+  { timestamps: true }
+);
 
 userSchema.pre('save', async function (next) {
   const User = this;
