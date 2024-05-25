@@ -1,8 +1,10 @@
+// Users (Role Admin & Pengguna/Mahasiswa)
 const Users = require('../../api/v1/users/model');
 const { BadRequestError, NotFoundError } = require('../../errors');
 
 const createUsers = async (req, res) => {
-  const { name, email, password, confirmPassword, avatar, role } = req.body;
+  const { name, email, password, confirmPassword, no_telp, avatar, role } =
+    req.body;
 
   if (password !== confirmPassword) {
     throw new BadRequestError('Password dan Konfirmasi password tidak cocok');
@@ -12,6 +14,7 @@ const createUsers = async (req, res) => {
     name,
     email,
     password,
+    no_telp,
     avatar,
     role,
   });
@@ -24,7 +27,7 @@ const createUsers = async (req, res) => {
 const getAllUsers = async (req) => {
   const result = await Users.find(
     {},
-    'name email avatar role createdAt'
+    'name email no_telp avatar role createdAt'
   ).exec();
 
   return result;
@@ -35,7 +38,7 @@ const getOneUsers = async (req) => {
 
   const result = await Users.findOne(
     { _id: id },
-    'name email avatar role'
+    'name email no_telp avatar role'
   ).exec();
 
   if (!result) throw new NotFoundError(`Tidak ada user dengan id :  ${id}`);
@@ -45,18 +48,19 @@ const getOneUsers = async (req) => {
 
 const updateUsers = async (req) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, no_telp } = req.body;
 
   const check = await Users.findOne({
     name,
+    no_telp,
     _id: { $ne: id },
   });
 
-  if (check) throw new BadRequestError('User nama sudah terdaftar');
+  if (check) throw new BadRequestError('Nama user sudah terdaftar');
 
   const result = await Users.findOneAndUpdate(
     { _id: id },
-    { name },
+    { name, no_telp },
     { new: true, runValidators: true }
   );
 

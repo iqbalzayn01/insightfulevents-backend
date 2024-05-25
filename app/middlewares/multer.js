@@ -1,26 +1,30 @@
-const multer = require("multer");
+const multer = require('multer');
+const path = require('path');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/uploads/");
+    cb(null, 'public/uploads/documents/');
   },
   filename: function (req, file, cb) {
-    cb(null, Math.floor(Math.random() * 99999999) + "-" + file.originalname);
+    cb(null, Math.floor(Math.random() * 99999999) + '-' + file.originalname);
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg"
-  ) {
+  const allowedTypes = /jpeg|jpg|png|pdf|doc|docx/;
+  const extname = allowedTypes.test(
+    path.extname(file.originalname).toLowerCase()
+  );
+  const mimetype = allowedTypes.test(file.mimetype);
+
+  if (extname && mimetype) {
     cb(null, true);
   } else {
-    //reject file
+    // Reject file
     cb(
       {
-        message: "Unsupported file format",
+        message:
+          'Unsupported file format. Allowed formats: JPEG, JPG, PNG, PDF, DOC, DOCX',
       },
       false
     );

@@ -21,6 +21,11 @@ let userSchema = new mongoose.Schema(
       required: [true, 'Password harus diisi'],
       minlength: 6,
     },
+    no_telp: {
+      type: String,
+      required: [true, 'Nomor telepon harus diisi'],
+      maxlength: 14,
+    },
     avatar: {
       type: String,
       default: function () {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-let speakerSchema = new mongoose.Schema(
+let talentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -30,11 +30,11 @@ let speakerSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: 'speaker',
+      default: 'talent',
       required: [true, 'Role harus diisi'],
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Speaker', speakerSchema);
+module.exports = mongoose.model('Talent', talentSchema);

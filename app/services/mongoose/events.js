@@ -1,12 +1,13 @@
+// kegiatan
 const Events = require('../../api/v1/events/model');
 const { BadRequestError, NotFoundError } = require('../../errors');
-const { checkingSpeakers } = require('./speakers');
+const { checkingTalents } = require('./talents');
 
 const createEvents = async (req, res) => {
-  const { name, description, event_status, location, speakerID, schedules } =
+  const { name, description, event_status, location, talentID, schedules } =
     req.body;
 
-  await checkingSpeakers(speakerID);
+  await checkingTalents(talentID);
 
   if (!name && !description) {
     throw new BadRequestError('Nama dan deskripsi harus diisi');
@@ -17,7 +18,7 @@ const createEvents = async (req, res) => {
     description,
     event_status,
     location,
-    speakerID,
+    talentID,
     schedules,
   });
 
@@ -33,11 +34,11 @@ const getAllEvents = async (req) => {
   }
 
   if (speakerID) {
-    condition = { ...condition, speakerID: speakerID };
+    condition = { ...condition, talentID: talentID };
   }
 
   const result = await Events.find(condition).populate({
-    path: 'speakerID',
+    path: 'talentID',
     select: '_id name email avatar no_telp role',
   });
 
@@ -48,37 +49,39 @@ const getOneEvents = async (req) => {
   const { id } = req.params;
 
   const result = await Events.findOne({ _id: id }).populate({
-    path: 'speakerID',
+    path: 'talentID',
     select: '_id name email avatar no_telp role',
   });
 
-  if (!result) throw new NotFoundError(`Tidak ada event dengan id :  ${id}`);
+  if (!result) throw new NotFoundError(`Tidak ada kegiatan dengan id :  ${id}`);
 
   return result;
 };
 
 const updateEvents = async (req) => {
   const { id } = req.params;
-  const { name, description, event_status, location, schedules } = req.body;
+  const { name, description, event_status, location, talentID, schedules } =
+    req.body;
 
   const check = await Events.findOne({
     name,
     description,
     event_status,
     location,
+    talentID,
     schedules,
     _id: { $ne: id },
   });
 
-  if (check) throw new BadRequestError('Event sudah terdaftar');
+  if (check) throw new BadRequestError('Kegiatan sudah terdaftar');
 
   const result = await Events.findOneAndUpdate(
     { _id: id },
-    { name, description, event_status, location, schedules },
+    { name, description, event_status, location, talentID, schedules },
     { new: true, runValidators: true }
   );
 
-  if (!result) throw new NotFoundError(`Tidak ada event dengan id :  ${id}`);
+  if (!result) throw new NotFoundError(`Tidak ada kegiatan dengan id :  ${id}`);
 
   return result;
 };
@@ -88,9 +91,17 @@ const deleteEvents = async (req) => {
 
   const result = await Events.findOne({ _id: id });
 
-  if (!result) throw new NotFoundError(`Tidak ada event dengan id :  ${id}`);
+  if (!result) throw new NotFoundError(`Tidak ada kegiatan dengan id :  ${id}`);
 
   await result.deleteOne({ _id: id });
+
+  return result;
+};
+
+const checkingEvents = async (id) => {
+  const result = await Events.findOne({ _id: id });
+
+  if (!result) throw new NotFoundError(`Tidak ada kegiatan dengan id :  ${id}`);
 
   return result;
 };
@@ -101,4 +112,5 @@ module.exports = {
   getOneEvents,
   updateEvents,
   deleteEvents,
+  checkingEvents,
 };

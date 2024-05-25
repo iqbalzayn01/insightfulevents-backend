@@ -10,8 +10,10 @@ const v1 = '/api/v1';
 const authCMSRouter = require('./app/api/v1/auth/router');
 const usersRouter = require('./app/api/v1/users/router');
 const userRefreshTokenRouter = require('./app/api/v1/userRefreshToken/router');
-const speakersRouter = require('./app/api/v1/speakers/router');
+const talentsRouter = require('./app/api/v1/talents/router');
 const eventsRouter = require('./app/api/v1/events/router');
+const registrationRouter = require('./app/api/v1/registration/router');
+const uploadDocumentRouter = require('./app/api/v1/uploadDocument/router');
 
 // Middlewares
 const notFoundMiddleware = require('./app/middlewares/not-found');
@@ -33,8 +35,10 @@ app.get('/', (req, res) => {
 app.use(`${v1}/cms`, authCMSRouter);
 app.use(`${v1}/cms`, usersRouter);
 app.use(`${v1}/cms`, userRefreshTokenRouter);
-app.use(`${v1}/cms`, speakersRouter);
+app.use(`${v1}/cms`, talentsRouter);
 app.use(`${v1}/cms`, eventsRouter);
+app.use(`${v1}/cms`, registrationRouter);
+app.use(`${v1}/cms`, uploadDocumentRouter);
 
 // App Middlewares
 app.use(notFoundMiddleware);

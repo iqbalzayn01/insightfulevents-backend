@@ -24,9 +24,9 @@ let eventSchema = new mongoose.Schema(
       minlength: 2,
       maxlength: 100,
     },
-    speakerID: {
+    talentID: {
       type: mongoose.Types.ObjectId,
-      ref: 'Speaker',
+      ref: 'Talent',
       required: true,
     },
     schedules: [

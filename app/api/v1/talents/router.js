@@ -7,20 +7,20 @@ const {
 } = require('../../../middlewares/auth');
 
 router.post(
-  '/create-speakers',
+  '/create-talents',
   authenticateUser,
   authorizeRoles('admin'),
   create
 );
 
-router.get('/speakers', authenticateUser, authorizeRoles('admin'), index);
+router.get('/talents', authenticateUser, authorizeRoles('admin'), index);
 
-router.get('/speakers/:id', authenticateUser, authorizeRoles('admin'), find);
+router.get('/talents/:id', authenticateUser, authorizeRoles('admin'), find);
 
-router.put('/speakers/:id', authenticateUser, authorizeRoles('admin'), update);
+router.put('/talents/:id', authenticateUser, authorizeRoles('admin'), update);
 
 router.delete(
-  '/speakers/:id',
+  '/talents/:id',
   authenticateUser,
   authorizeRoles('admin'),
   destroy

@@ -7,32 +7,32 @@ const {
 } = require('../../../middlewares/auth');
 
 router.post(
-  '/create-registration',
+  '/upload-documents',
   authenticateUser,
   authorizeRoles('admin', 'user'),
   create
 );
 
-router.get('/registration', authenticateUser, authorizeRoles('admin'), index);
+router.get('/documents', authenticateUser, authorizeRoles('admin'), index);
 
 router.get(
-  '/registration/:id',
+  '/documents/:id',
   authenticateUser,
-  authorizeRoles('admin'),
+  authorizeRoles('admin', 'user'),
   find
 );
 
 router.put(
-  '/registration/:id',
+  '/documents/:id',
   authenticateUser,
   authorizeRoles('admin', 'user'),
   update
 );
 
 router.delete(
-  '/registration/:id',
+  '/documents/:id',
   authenticateUser,
-  authorizeRoles('admin'),
+  authorizeRoles('admin', 'user'),
   destroy
 );
 
