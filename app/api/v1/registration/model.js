@@ -17,10 +17,6 @@ let registrationSchema = new mongoose.Schema(
       ref: 'Event',
       required: true,
     },
-    registrationDate: {
-      type: Date,
-      required: true,
-    },
   },
   { timestamps: true }
 );

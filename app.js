@@ -14,6 +14,7 @@ const talentsRouter = require('./app/api/v1/talents/router');
 const eventsRouter = require('./app/api/v1/events/router');
 const registrationRouter = require('./app/api/v1/registration/router');
 const uploadDocumentRouter = require('./app/api/v1/uploadDocument/router');
+const paymentsRouter = require('./app/api/v1/payments/router');
 
 // Middlewares
 const notFoundMiddleware = require('./app/middlewares/not-found');
@@ -39,6 +40,7 @@ app.use(`${v1}/cms`, talentsRouter);
 app.use(`${v1}/cms`, eventsRouter);
 app.use(`${v1}/cms`, registrationRouter);
 app.use(`${v1}/cms`, uploadDocumentRouter);
+app.use(`${v1}/cms`, paymentsRouter);
 
 // App Middlewares
 app.use(notFoundMiddleware);

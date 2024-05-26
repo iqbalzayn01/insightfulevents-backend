@@ -6,7 +6,7 @@ const { checkingEvents } = require('./events');
 const { checkingDocuments } = require('./uploadDocument');
 
 const createRegistration = async (req, res) => {
-  const { userID, documentID, eventID, registrationDate } = req.body;
+  const { userID, documentID, eventID } = req.body;
 
   await checkingUsers(userID);
   await checkingDocuments(documentID);
@@ -20,7 +20,6 @@ const createRegistration = async (req, res) => {
     userID,
     documentID,
     eventID,
-    registrationDate,
   });
 
   return result;
@@ -125,10 +124,20 @@ const deleteRegistration = async (req) => {
   return result;
 };
 
+const checkingRegistration = async (id) => {
+  const result = await Registration.findOne({ _id: id });
+
+  if (!result)
+    throw new NotFoundError(`Tidak ada registrasi dengan id :  ${id}`);
+
+  return result;
+};
+
 module.exports = {
   createRegistration,
   getAllRegistration,
   getOneRegistration,
   updateRegistration,
   deleteRegistration,
+  checkingRegistration,
 };

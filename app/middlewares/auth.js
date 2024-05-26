@@ -24,7 +24,6 @@ const authenticateUser = async (req, res, next) => {
       name: payload.name,
       id: payload.userId,
     };
-    console.log('TEST', req.user);
 
     next();
   } catch (error) {

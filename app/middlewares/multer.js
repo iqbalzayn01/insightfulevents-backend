@@ -1,9 +1,16 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
+const uploadDirectory = path.join(__dirname, '../../public/uploads/documents/');
+
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads/documents/');
+    cb(null, uploadDirectory);
   },
   filename: function (req, file, cb) {
     cb(null, Math.floor(Math.random() * 99999999) + '-' + file.originalname);

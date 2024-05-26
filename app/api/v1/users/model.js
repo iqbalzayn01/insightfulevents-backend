@@ -23,6 +23,7 @@ let userSchema = new mongoose.Schema(
     },
     no_telp: {
       type: String,
+      unique: true,
       required: [true, 'Nomor telepon harus diisi'],
       maxlength: 14,
     },

@@ -29,6 +29,11 @@ let eventSchema = new mongoose.Schema(
       ref: 'Talent',
       required: true,
     },
+    price: {
+      type: Number,
+      required: [true, 'Harga harus diisi'],
+      default: 0,
+    },
     schedules: [
       {
         start_time: {

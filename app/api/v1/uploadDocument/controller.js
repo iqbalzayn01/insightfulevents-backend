@@ -5,13 +5,12 @@ const {
   getOneDocuments,
   updateDocuments,
   deleteDocuments,
-} = require('../../../services/mongoose/talents');
+} = require('../../../services/mongoose/uploadDocument');
 const { StatusCodes } = require('http-status-codes');
 
 const create = async (req, res, next) => {
   try {
     const result = await uploadDocuments(req);
-
     res.status(StatusCodes.CREATED).json({
       data: result,
     });

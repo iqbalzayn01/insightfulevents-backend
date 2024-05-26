@@ -25,6 +25,7 @@ let talentSchema = new mongoose.Schema(
     },
     no_telp: {
       type: String,
+      unique: true,
       required: [true, 'Nomor Telepon harus diisi'],
       maxlength: 13,
     },

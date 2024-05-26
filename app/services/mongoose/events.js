@@ -4,8 +4,15 @@ const { BadRequestError, NotFoundError } = require('../../errors');
 const { checkingTalents } = require('./talents');
 
 const createEvents = async (req, res) => {
-  const { name, description, event_status, location, talentID, schedules } =
-    req.body;
+  const {
+    name,
+    description,
+    event_status,
+    location,
+    talentID,
+    price,
+    schedules,
+  } = req.body;
 
   await checkingTalents(talentID);
 
@@ -19,6 +26,7 @@ const createEvents = async (req, res) => {
     event_status,
     location,
     talentID,
+    price,
     schedules,
   });
 
@@ -33,7 +41,7 @@ const getAllEvents = async (req) => {
     condition = { ...condition, title: { $regex: keyword, $options: 'i' } };
   }
 
-  if (speakerID) {
+  if (talentID) {
     condition = { ...condition, talentID: talentID };
   }
 
@@ -60,8 +68,15 @@ const getOneEvents = async (req) => {
 
 const updateEvents = async (req) => {
   const { id } = req.params;
-  const { name, description, event_status, location, talentID, schedules } =
-    req.body;
+  const {
+    name,
+    description,
+    event_status,
+    location,
+    talentID,
+    price,
+    schedules,
+  } = req.body;
 
   const check = await Events.findOne({
     name,
@@ -69,6 +84,7 @@ const updateEvents = async (req) => {
     event_status,
     location,
     talentID,
+    price,
     schedules,
     _id: { $ne: id },
   });
@@ -77,7 +93,7 @@ const updateEvents = async (req) => {
 
   const result = await Events.findOneAndUpdate(
     { _id: id },
-    { name, description, event_status, location, talentID, schedules },
+    { name, description, event_status, location, talentID, price, schedules },
     { new: true, runValidators: true }
   );
 
