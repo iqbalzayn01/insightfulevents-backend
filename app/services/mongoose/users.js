@@ -48,10 +48,11 @@ const getOneUsers = async (req) => {
 
 const updateUsers = async (req) => {
   const { id } = req.params;
-  const { name, no_telp } = req.body;
+  const { name, email, no_telp } = req.body;
 
   const check = await Users.findOne({
     name,
+    email,
     no_telp,
     _id: { $ne: id },
   });
@@ -60,7 +61,7 @@ const updateUsers = async (req) => {
 
   const result = await Users.findOneAndUpdate(
     { _id: id },
-    { name, no_telp },
+    { name, email, no_telp },
     { new: true, runValidators: true }
   );
 

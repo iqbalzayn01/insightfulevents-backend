@@ -1,9 +1,9 @@
-const { signin } = require('../../../services/mongoose/auth');
+const { login, getUserLogged } = require('../../../services/mongoose/auth');
 const { StatusCodes } = require('http-status-codes');
 
-const signinCms = async (req, res, next) => {
+const loginCms = async (req, res, next) => {
   try {
-    const result = await signin(req);
+    const result = await login(req);
 
     res.status(StatusCodes.CREATED).json({
       data: result,
@@ -13,4 +13,16 @@ const signinCms = async (req, res, next) => {
   }
 };
 
-module.exports = { signinCms };
+const userLogged = async (req, res, next) => {
+  try {
+    const result = await getUserLogged(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { loginCms, userLogged };

@@ -31,7 +31,7 @@ let talentSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: 'talent',
+      default: 'pembicara',
       required: [true, 'Role harus diisi'],
     },
   },

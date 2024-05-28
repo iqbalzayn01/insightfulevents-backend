@@ -5,6 +5,24 @@ const logger = require('morgan');
 
 const app = express();
 
+// Middleware to handle CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Ubah sesuai dengan asal frontend Anda
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  );
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  next();
+});
+
 const v1 = '/api/v1';
 // Router
 const authCMSRouter = require('./app/api/v1/auth/router');

@@ -3,7 +3,7 @@ const { BadRequestError, UnauthorizedError } = require('../../errors');
 const { createTokenUser, createJWT, createRefreshJWT } = require('../../utils');
 const { createUserRefreshToken } = require('./userRefreshToken');
 
-const signin = async (req) => {
+const login = async (req) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -34,9 +34,20 @@ const signin = async (req) => {
   return {
     token,
     refreshToken,
+    _id: result.id,
     email: result.email,
     role: result.role,
   };
 };
 
-module.exports = { signin };
+const getUserLogged = async (req, res, next) => {
+  const userId = req.user.id;
+
+  const result = await Users.findById(userId);
+
+  if (!result) throw new UnauthorizedError('User not found');
+
+  return result;
+};
+
+module.exports = { login, getUserLogged };
