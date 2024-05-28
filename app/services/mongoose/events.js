@@ -12,12 +12,13 @@ const createEvents = async (req, res) => {
     talentID,
     price,
     schedules,
+    linkMeeting,
   } = req.body;
 
   await checkingTalents(talentID);
 
-  if (!name && !description) {
-    throw new BadRequestError('Nama dan deskripsi harus diisi');
+  if (!name && !description && !event_status) {
+    throw new BadRequestError('Nama, deskripsi, status kegiatan harus diisi');
   }
 
   const result = await Events.create({
@@ -28,13 +29,14 @@ const createEvents = async (req, res) => {
     talentID,
     price,
     schedules,
+    linkMeeting,
   });
 
   return result;
 };
 
 const getAllEvents = async (req) => {
-  const { keyword, speakerID } = req.query;
+  const { keyword, talentID } = req.query;
   let condition = {};
 
   if (keyword) {
@@ -76,6 +78,7 @@ const updateEvents = async (req) => {
     talentID,
     price,
     schedules,
+    linkMeeting,
   } = req.body;
 
   const check = await Events.findOne({
@@ -86,6 +89,7 @@ const updateEvents = async (req) => {
     talentID,
     price,
     schedules,
+    linkMeeting,
     _id: { $ne: id },
   });
 
@@ -93,7 +97,16 @@ const updateEvents = async (req) => {
 
   const result = await Events.findOneAndUpdate(
     { _id: id },
-    { name, description, event_status, location, talentID, price, schedules },
+    {
+      name,
+      description,
+      event_status,
+      location,
+      talentID,
+      price,
+      schedules,
+      linkMeeting,
+    },
     { new: true, runValidators: true }
   );
 

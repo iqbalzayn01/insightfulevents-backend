@@ -46,6 +46,10 @@ let eventSchema = new mongoose.Schema(
         },
       },
     ],
+    linkMeeting: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );
