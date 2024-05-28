@@ -39,11 +39,12 @@ const getOneTalents = async (req) => {
 
 const updateTalents = async (req) => {
   const { id } = req.params;
-  const { name, email } = req.body;
+  const { name, email, no_telp } = req.body;
 
   const check = await Talents.findOne({
     name,
     email,
+    no_telp,
     _id: { $ne: id },
   });
 
@@ -51,7 +52,7 @@ const updateTalents = async (req) => {
 
   const result = await Talents.findOneAndUpdate(
     { _id: id },
-    { name, email },
+    { name, email, no_telp },
     { new: true, runValidators: true }
   );
 
