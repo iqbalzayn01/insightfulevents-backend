@@ -27,7 +27,7 @@ const createUsers = async (req, res) => {
 const getAllUsers = async (req) => {
   const result = await Users.find(
     {},
-    'name email no_telp avatar role createdAt'
+    'id_user name email no_telp avatar role createdAt'
   ).exec();
 
   return result;
@@ -38,7 +38,7 @@ const getOneUsers = async (req) => {
 
   const result = await Users.findOne(
     { _id: id },
-    'name email no_telp avatar role'
+    'id_user name email no_telp avatar role'
   ).exec();
 
   if (!result) throw new NotFoundError(`Tidak ada user dengan id :  ${id}`);

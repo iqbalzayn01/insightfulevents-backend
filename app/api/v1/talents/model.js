@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 let talentSchema = new mongoose.Schema(
   {
+    id_talent: {
+      type: String,
+      unique: true,
+    },
     name: {
       type: String,
       required: [true, 'Nama harus diisi'],
@@ -31,11 +35,31 @@ let talentSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: 'pembicara',
+      default: 'narasumber',
       required: [true, 'Role harus diisi'],
     },
   },
   { timestamps: true }
 );
+
+talentSchema.pre('save', async function (next) {
+  const Talent = this;
+
+  if (Talent.isNew) {
+    const year = new Date().getFullYear().toString().slice(-2);
+    const prefix = 'NR';
+
+    try {
+      const count = await mongoose.model('Talent').countDocuments();
+      const sequentialNumber = (count + 1).toString().padStart(3, '0');
+
+      Talent.id_talent = `${prefix}${year}${sequentialNumber}`;
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  next();
+});
 
 module.exports = mongoose.model('Talent', talentSchema);

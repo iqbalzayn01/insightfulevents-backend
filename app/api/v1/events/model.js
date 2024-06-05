@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 let eventSchema = new mongoose.Schema(
   {
+    id_event: {
+      type: String,
+      unique: true,
+    },
     name: {
       type: String,
       unique: true,
@@ -24,28 +28,11 @@ let eventSchema = new mongoose.Schema(
       minlength: 2,
       maxlength: 100,
     },
-    talentID: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Talent',
-      required: true,
-    },
     price: {
       type: Number,
       required: [true, 'Harga harus diisi'],
       default: 0,
     },
-    schedules: [
-      {
-        start_time: {
-          type: Date,
-          required: [true, 'Waktu mulai harus diisi'],
-        },
-        end_time: {
-          type: Date,
-          required: [true, 'Waktu selesai harus diisi'],
-        },
-      },
-    ],
     linkMeeting: {
       type: String,
       default: '',
@@ -53,5 +40,29 @@ let eventSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+eventSchema.pre('save', async function (next) {
+  if (this.isNew) {
+    try {
+      const yearSuffix = new Date().getFullYear().toString().slice(-2);
+      const lastEvent = await this.constructor
+        .findOne()
+        .sort({ createdAt: -1 })
+        .exec();
+      let sequenceNumber = '001';
+
+      if (lastEvent) {
+        const lastIdEvent = lastEvent.id_event;
+        const lastSequence = parseInt(lastIdEvent.slice(-3), 10);
+        sequenceNumber = (lastSequence + 1).toString().padStart(3, '0');
+      }
+
+      this.id_event = `KN${yearSuffix}${sequenceNumber}`;
+    } catch (error) {
+      return next(error);
+    }
+  }
+  next();
+});
 
 module.exports = mongoose.model('Event', eventSchema);

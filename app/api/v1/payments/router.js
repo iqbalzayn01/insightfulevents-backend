@@ -9,7 +9,7 @@ const {
 router.post(
   '/create-payments',
   authenticateUser,
-  authorizeRoles('admin', 'user'),
+  authorizeRoles('admin', 'peserta'),
   create
 );
 

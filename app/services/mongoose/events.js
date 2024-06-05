@@ -4,18 +4,8 @@ const { BadRequestError, NotFoundError } = require('../../errors');
 const { checkingTalents } = require('./talents');
 
 const createEvents = async (req, res) => {
-  const {
-    name,
-    description,
-    event_status,
-    location,
-    talentID,
-    price,
-    schedules,
-    linkMeeting,
-  } = req.body;
-
-  await checkingTalents(talentID);
+  const { name, description, event_status, location, price, linkMeeting } =
+    req.body;
 
   if (!name && !description && !event_status) {
     throw new BadRequestError('Nama, deskripsi, status kegiatan harus diisi');
@@ -26,9 +16,7 @@ const createEvents = async (req, res) => {
     description,
     event_status,
     location,
-    talentID,
     price,
-    schedules,
     linkMeeting,
   });
 
@@ -70,25 +58,15 @@ const getOneEvents = async (req) => {
 
 const updateEvents = async (req) => {
   const { id } = req.params;
-  const {
-    name,
-    description,
-    event_status,
-    location,
-    talentID,
-    price,
-    schedules,
-    linkMeeting,
-  } = req.body;
+  const { name, description, event_status, location, price, linkMeeting } =
+    req.body;
 
   const check = await Events.findOne({
     name,
     description,
     event_status,
     location,
-    talentID,
     price,
-    schedules,
     linkMeeting,
     _id: { $ne: id },
   });
@@ -102,9 +80,7 @@ const updateEvents = async (req) => {
       description,
       event_status,
       location,
-      talentID,
       price,
-      schedules,
       linkMeeting,
     },
     { new: true, runValidators: true }

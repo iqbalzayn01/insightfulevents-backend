@@ -9,7 +9,7 @@ const {
 router.post(
   '/create-registration',
   authenticateUser,
-  authorizeRoles('admin', 'user'),
+  authorizeRoles('admin', 'peserta'),
   create
 );
 
@@ -25,7 +25,7 @@ router.get(
 router.put(
   '/registration/:id',
   authenticateUser,
-  authorizeRoles('admin', 'user'),
+  authorizeRoles('admin', 'peserta'),
   update
 );
 
