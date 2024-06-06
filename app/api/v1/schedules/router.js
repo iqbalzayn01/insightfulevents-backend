@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express();
-//  index, find, update, destroy
-const { create } = require('./controller');
+const { create, index, find, update, destroy } = require('./controller');
 const {
   authenticateUser,
   authorizeRoles,
@@ -14,17 +13,17 @@ router.post(
   create
 );
 
-// router.get('/schedules', authenticateUser, authorizeRoles('admin'), index);
+router.get('/schedules', authenticateUser, authorizeRoles('admin'), index);
 
-// router.get('/schedules/:id', authenticateUser, authorizeRoles('admin'), find);
+router.get('/schedules/:id', authenticateUser, authorizeRoles('admin'), find);
 
-// router.put('/schedules/:id', authenticateUser, authorizeRoles('admin'), update);
+router.put('/schedules/:id', authenticateUser, authorizeRoles('admin'), update);
 
-// router.delete(
-//   '/schedules/:id',
-//   authenticateUser,
-//   authorizeRoles('admin'),
-//   destroy
-// );
+router.delete(
+  '/schedules/:id',
+  authenticateUser,
+  authorizeRoles('admin'),
+  destroy
+);
 
 module.exports = router;
