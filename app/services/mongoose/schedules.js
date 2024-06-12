@@ -100,7 +100,7 @@ const updateSchedules = async (req) => {
 const deleteSchedules = async (req) => {
   const { id } = req.params;
 
-  const result = await Events.findOne({ _id: id });
+  const result = await Schedules.findOne({ _id: id });
 
   if (!result) throw new NotFoundError(`Tidak ada jadwal dengan id :  ${id}`);
 

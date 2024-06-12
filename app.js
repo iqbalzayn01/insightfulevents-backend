@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware to handle CORS
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Ubah sesuai dengan asal frontend Anda
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Ubah sesuai dengan asal frontend Anda
   res.setHeader(
     'Access-Control-Allow-Methods',
     'GET, POST, OPTIONS, PUT, PATCH, DELETE'
