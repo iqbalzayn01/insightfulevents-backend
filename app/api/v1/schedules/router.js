@@ -13,17 +13,12 @@ router.post(
   create
 );
 
-router.get('/schedules', authenticateUser, authorizeRoles('admin'), index);
+router.get('/schedules', index);
 
-router.get('/schedules/:id', authenticateUser, authorizeRoles('admin'), find);
+router.get('/schedules/:id', find);
 
 router.put('/schedules/:id', authenticateUser, authorizeRoles('admin'), update);
 
-router.delete(
-  '/schedules/:id',
-  authenticateUser,
-  authorizeRoles('admin'),
-  destroy
-);
+router.delete('/schedules/:id', authenticateUser, destroy);
 
 module.exports = router;

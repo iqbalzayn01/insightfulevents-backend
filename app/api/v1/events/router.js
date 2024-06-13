@@ -13,9 +13,9 @@ router.post(
   create
 );
 
-router.get('/events', authenticateUser, authorizeRoles('admin'), index);
+router.get('/events', index);
 
-router.get('/events/:id', authenticateUser, authorizeRoles('admin'), find);
+router.get('/events/:id', find);
 
 router.put('/events/:id', authenticateUser, authorizeRoles('admin'), update);
 
