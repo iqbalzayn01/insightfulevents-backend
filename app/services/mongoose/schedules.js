@@ -57,7 +57,7 @@ const getOneSchedules = async (req) => {
   const result = await Schedules.findOne({ _id: id })
     .populate({
       path: 'talentID',
-      select: '_id name, email, avatar, no_telp, role',
+      select: '_id name email avatar no_telp role',
     })
     .populate({
       path: 'eventID',
