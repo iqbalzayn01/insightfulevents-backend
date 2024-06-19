@@ -61,7 +61,7 @@ const getOneSchedules = async (req) => {
     })
     .populate({
       path: 'eventID',
-      select: '_id name description event_status location talentID schedules',
+      select: '_id name description event_status location price linkMeeting',
     });
 
   if (!result) throw new NotFoundError(`Tidak ada jadwal dengan id :  ${id}`);
