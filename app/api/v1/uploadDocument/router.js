@@ -16,7 +16,12 @@ router.post(
   create
 );
 
-router.get('/documents', authenticateUser, authorizeRoles('admin'), index);
+router.get(
+  '/documents',
+  authenticateUser,
+  authorizeRoles('admin', 'peserta'),
+  index
+);
 
 router.get(
   '/documents/:id',
