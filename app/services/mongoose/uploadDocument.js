@@ -2,9 +2,11 @@ const UploadDocument = require('../../api/v1/uploadDocument/model');
 
 const uploadDocuments = async (req) => {
   const { filename } = req.file;
+  const { data_valid } = req.body;
 
   const result = await UploadDocument.create({
     fileName: `uploads/documents/${filename}`,
+    data_valid,
   });
 
   return result;
@@ -28,16 +30,23 @@ const getOneDocuments = async (req) => {
 
 const updateDocuments = async (req) => {
   const { id } = req.params;
-  const { fileName } = req.body;
+  const { data_valid } = req.body;
 
-  // const check = await UploadDocument.findOne({
-  //   fileName,
-  //   _id: { $ne: id },
-  // });
+  const check = await UploadDocument.findOne({
+    _id: { $ne: id },
+  });
+
+  if (check) throw new BadRequestError(`Tidak ada dokumen dengan id: ${id}`);
+
+  if (
+    !['Belum Diperiksa', 'Data Valid', 'Data Tidak Valid'].includes(data_valid)
+  ) {
+    throw new Error('Invalid data_valid status');
+  }
 
   const result = await UploadDocument.findOneAndUpdate(
     { _id: id },
-    { fileName },
+    { data_valid: data_valid },
     { new: true, runValidators: true }
   );
 

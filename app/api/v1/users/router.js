@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express();
-const { create, index, find, update, destroy } = require('./controller');
+const {
+  create,
+  index,
+  find,
+  update,
+  destroy,
+  registerUser,
+  validateUser,
+  getUserStatus,
+} = require('./controller');
 const {
   authenticateUser,
   authorizeRoles,

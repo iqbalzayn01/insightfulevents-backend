@@ -27,7 +27,7 @@ const login = async (req) => {
   const token = createJWT({ payload: tokenPayload });
   const refreshToken = createRefreshJWT({ payload: tokenPayload });
 
-  if (role === 'admin' || role === 'user') {
+  if (role === 'admin' || role === 'peserta') {
     await createUserRefreshToken({ refreshToken, user: result._id });
   }
 

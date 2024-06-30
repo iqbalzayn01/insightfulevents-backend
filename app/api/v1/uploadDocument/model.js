@@ -10,6 +10,11 @@ const uploadSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    data_valid: {
+      type: String,
+      enum: ['Belum Diperiksa', 'Data Valid', 'Data Tidak Valid'],
+      default: 'Belum Diperiksa',
+    },
   },
   { timestamps: true }
 );
