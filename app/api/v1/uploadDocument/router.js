@@ -6,11 +6,11 @@ const {
   authorizeRoles,
 } = require('../../../middlewares/auth');
 
-const upload = require('../../../middlewares/multer');
+const { documentUploadMiddleware } = require('../../../middlewares/multer');
 
 router.post(
   '/upload-documents',
-  upload.single('file'),
+  documentUploadMiddleware.single('file'),
   authenticateUser,
   authorizeRoles('admin', 'peserta'),
   create

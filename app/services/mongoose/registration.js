@@ -56,7 +56,8 @@ const getAllRegistration = async (req) => {
     })
     .populate({
       path: 'eventID',
-      select: '_id name description event_status location talentID schedules',
+      select:
+        '_id name description event_status location price linkMeeting imageID',
     });
 
   return result;
@@ -76,7 +77,8 @@ const getOneRegistration = async (req) => {
     })
     .populate({
       path: 'eventID',
-      select: '_id name description event_status location talentID schedules',
+      select:
+        '_id name description event_status location price linkMeeting imageID',
     });
 
   if (!result)

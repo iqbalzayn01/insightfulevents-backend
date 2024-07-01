@@ -32,6 +32,7 @@ const schedulesRouter = require('./app/api/v1/schedules/router');
 const eventsRouter = require('./app/api/v1/events/router');
 const registrationRouter = require('./app/api/v1/registration/router');
 const uploadDocumentRouter = require('./app/api/v1/uploadDocument/router');
+const imagesRouter = require('./app/api/v1/images/router');
 const paymentsRouter = require('./app/api/v1/payments/router');
 
 // Middlewares
@@ -59,6 +60,7 @@ app.use(`${v1}/cms`, schedulesRouter);
 app.use(`${v1}/cms`, eventsRouter);
 app.use(`${v1}/cms`, registrationRouter);
 app.use(`${v1}/cms`, uploadDocumentRouter);
+app.use(`${v1}/cms`, imagesRouter);
 app.use(`${v1}/cms`, paymentsRouter);
 
 // App Middlewares

@@ -2,23 +2,36 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const uploadDirectory = path.join(__dirname, '../../public/uploads/documents/');
-
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory, { recursive: true });
+// Direktori untuk dokumen
+const documentUploadDirectory = path.join(
+  __dirname,
+  '../../public/uploads/documents/'
+);
+if (!fs.existsSync(documentUploadDirectory)) {
+  fs.mkdirSync(documentUploadDirectory, { recursive: true });
 }
 
-const storage = multer.diskStorage({
+// Direktori untuk gambar
+const imageUploadDirectory = path.join(
+  __dirname,
+  '../../public/uploads/images/'
+);
+if (!fs.existsSync(imageUploadDirectory)) {
+  fs.mkdirSync(imageUploadDirectory, { recursive: true });
+}
+
+// Konfigurasi untuk dokumen
+const documentStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, uploadDirectory);
+    cb(null, documentUploadDirectory);
   },
   filename: function (req, file, cb) {
     cb(null, Math.floor(Math.random() * 99999999) + '-' + file.originalname);
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|pdf|doc|docx/;
+const documentFileFilter = (req, file, cb) => {
+  const allowedTypes = /pdf|doc|docx/;
   const extname = allowedTypes.test(
     path.extname(file.originalname).toLowerCase()
   );
@@ -27,23 +40,62 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     cb(null, true);
   } else {
-    // Reject file
     cb(
       {
         message:
-          'Unsupported file format. Allowed formats: JPEG, JPG, PNG, PDF, DOC, DOCX',
+          'Unsupported file format for documents. Allowed formats: PDF, DOC, DOCX',
       },
       false
     );
   }
 };
 
-const uploadMiddleware = multer({
-  storage,
-  limits: {
-    fileSize: 25000000,
+// Konfigurasi untuk gambar
+const imageStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, imageUploadDirectory);
   },
-  fileFilter: fileFilter,
+  filename: function (req, file, cb) {
+    cb(null, Math.floor(Math.random() * 99999999) + '-' + file.originalname);
+  },
 });
 
-module.exports = uploadMiddleware;
+const imageFileFilter = (req, file, cb) => {
+  const allowedTypes = /jpeg|jpg|png/;
+  const extname = allowedTypes.test(
+    path.extname(file.originalname).toLowerCase()
+  );
+  const mimetype = allowedTypes.test(file.mimetype);
+
+  if (extname && mimetype) {
+    cb(null, true);
+  } else {
+    cb(
+      {
+        message:
+          'Unsupported file format for images. Allowed formats: JPEG, JPG, PNG',
+      },
+      false
+    );
+  }
+};
+
+// Inisialisasi multer untuk dokumen
+const documentUploadMiddleware = multer({
+  storage: documentStorage,
+  limits: {
+    fileSize: 5000000, // 5 mb
+  },
+  fileFilter: documentFileFilter,
+});
+
+// Inisialisasi multer untuk gambar
+const imageUploadMiddleware = multer({
+  storage: imageStorage,
+  limits: {
+    fileSize: 5000000, // 5 mb
+  },
+  fileFilter: imageFileFilter,
+});
+
+module.exports = { documentUploadMiddleware, imageUploadMiddleware };

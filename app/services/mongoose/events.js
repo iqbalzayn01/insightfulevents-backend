@@ -1,13 +1,25 @@
 // kegiatan
 const Events = require('../../api/v1/events/model');
 const { BadRequestError, NotFoundError } = require('../../errors');
+const { checkingImage } = require('./images');
 
 const createEvents = async (req, res) => {
-  const { name, description, event_status, location, price, linkMeeting } =
-    req.body;
+  const {
+    name,
+    description,
+    event_status,
+    location,
+    price,
+    linkMeeting,
+    imageID,
+  } = req.body;
+
+  await checkingImage(imageID);
 
   if (!name && !description && !event_status) {
-    throw new BadRequestError('Nama, deskripsi, status kegiatan harus diisi');
+    throw new BadRequestError(
+      'Nama, deskripsi, status, dan gambar kegiatan harus diisi'
+    );
   }
 
   const result = await Events.create({
@@ -17,13 +29,28 @@ const createEvents = async (req, res) => {
     location,
     price,
     linkMeeting,
+    imageID,
   });
 
   return result;
 };
 
 const getAllEvents = async (req) => {
-  const result = await Events.find();
+  const { keyword, imageID } = req.query;
+  let condition = {};
+
+  if (keyword) {
+    condition = { ...condition, title: { $regex: keyword, $options: 'i' } };
+  }
+
+  if (imageID) {
+    condition = { ...condition, imageID: imageID };
+  }
+
+  const result = await Events.find(condition).populate({
+    path: 'imageID',
+    select: '_id fileName',
+  });
 
   return result;
 };
@@ -31,7 +58,10 @@ const getAllEvents = async (req) => {
 const getOneEvents = async (req) => {
   const { id } = req.params;
 
-  const result = await Events.findOne({ _id: id });
+  const result = await Events.findOne({ _id: id }).populate({
+    path: 'imageID',
+    select: '_id fileName',
+  });
 
   if (!result) throw new NotFoundError(`Tidak ada kegiatan dengan id :  ${id}`);
 

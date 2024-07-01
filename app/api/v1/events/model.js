@@ -37,6 +37,11 @@ let eventSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    imageID: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Image',
+      required: true,
+    },
   },
   { timestamps: true }
 );

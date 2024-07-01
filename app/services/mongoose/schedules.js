@@ -45,7 +45,12 @@ const getAllSchedules = async (req) => {
     })
     .populate({
       path: 'eventID',
-      select: '_id name description event_status location price linkMeeting',
+      select:
+        '_id name description event_status location price linkMeeting imageID',
+      populate: {
+        path: 'imageID',
+        select: '_id fileName',
+      },
     });
 
   return result;
@@ -61,7 +66,12 @@ const getOneSchedules = async (req) => {
     })
     .populate({
       path: 'eventID',
-      select: '_id name description event_status location price linkMeeting',
+      select:
+        '_id name description event_status location price linkMeeting imageID',
+      populate: {
+        path: 'imageID',
+        select: '_id fileName',
+      },
     });
 
   if (!result) throw new NotFoundError(`Tidak ada jadwal dengan id :  ${id}`);
